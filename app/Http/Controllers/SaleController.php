@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sale;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SaleController extends Controller
 {
@@ -26,7 +27,7 @@ class SaleController extends Controller
             abort(403);
         }
 
-        $sale->load(['user', 'saleItems']);
+        $sale->load(['user', 'saleItems.product']);
 
         return view('sales.show', compact('sale'));
     }
@@ -37,8 +38,21 @@ class SaleController extends Controller
             abort(403);
         }
 
-        $sale->load(['user', 'saleItems']);
+        $sale->load(['user', 'saleItems.product']);
 
         return view('pdf.receipt', compact('sale'));
+    }
+
+    public function downloadReceipt(Sale $sale)
+    {
+        if (!Auth::user()->hasRole('admin') && $sale->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $sale->load(['user', 'saleItems.product']);
+
+        $pdf = Pdf::loadView('pdf.receipt', compact('sale'));
+
+        return $pdf->download('receipt-sale-' . $sale->id . '.pdf');
     }
 }

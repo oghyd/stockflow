@@ -13,20 +13,15 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-// Fournisseur routes
-Route::middleware(['auth', 'role:fournisseur'])->group(function () {
-    Route::get('/fournisseur/stock', [App\Http\Controllers\FournisseurStockController::class, 'index'])->name('fournisseur.stock');
-});
+    Route::middleware('role:fournisseur')->group(function () {
+        Route::get('/fournisseur/stock', [App\Http\Controllers\FournisseurStockController::class, 'index'])->name('fournisseur.stock');
+    });
 
+    Route::get('/admin/stock/report', [App\Http\Controllers\StockReportController::class, 'export'])->name('stock.report');
 
-Route::get('/admin/stock/report', [App\Http\Controllers\StockReportController::class, 'export'])->name('stock.report');
-
-Route::resource('products', \App\Http\Controllers\ProductController::class)->middleware(['auth', 'role:admin']);
-
-
-Route::resource('suppliers', \App\Http\Controllers\SupplierController::class)->middleware(['auth', 'role:admin']);
-
-Route::resource('categories', \App\Http\Controllers\CategoryController::class)->middleware(['auth', 'role:admin']);
+    Route::resource('products', \App\Http\Controllers\ProductController::class)->middleware('role:admin');
+    Route::resource('suppliers', \App\Http\Controllers\SupplierController::class)->middleware('role:admin');
+    Route::resource('categories', \App\Http\Controllers\CategoryController::class)->middleware('role:admin');
 
     Route::get('/caisse', function () {
         return view('caisse.index');
@@ -35,6 +30,7 @@ Route::resource('categories', \App\Http\Controllers\CategoryController::class)->
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
     Route::get('/sales/{sale}/receipt', [SaleController::class, 'receipt'])->name('sales.receipt');
+    Route::get('/sales/{sale}/receipt/download', [SaleController::class, 'downloadReceipt'])->name('sales.receipt.download');
 
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/activity', function () {
