@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        @livewire('product-search')
+       @livewire('products.product-search')
     </div>
 </div>
 @endsection

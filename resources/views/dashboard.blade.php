@@ -6,7 +6,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Widget Alertes Stock -->
             <div class="lg:col-span-2">
-                @livewire('low-stock-widget')
+                @livewire('dashboard.low-stock-widget')
             </div>
 
             <!-- Autres widgets (à ajouter plus tard) -->

@@ -89,16 +89,18 @@
         @endrole
 
         <!-- Fournisseur -->
-        @role('fournisseur')
-            <div class="space-y-1">
-                <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400">Fournisseur</p>
+       <!-- Fournisseur -->
+@role('fournisseur')
+    <div class="space-y-1">
+        <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400">Fournisseur</p>
 
-                <a href="#"
-                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
-                    My Stock
-                </a>
-            </div>
-        @endrole
+        <a href="{{ route('fournisseur.stock') }}"
+           class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+           {{ request()->routeIs('fournisseur.stock') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+            Mon Stock
+        </a>
+    </div>
+@endrole
     </nav>
 
     <!-- Bottom actions -->
