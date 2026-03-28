@@ -54,7 +54,7 @@
 
             <div class="flex items-center justify-center gap-3 pt-2">
                 <button type="submit"
-                        class="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 transition">
+                        class="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-black hover:bg-indigo-700 transition">
                     Update User
                 </button>
 
