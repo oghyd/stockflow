@@ -44,18 +44,21 @@
                     Activity Log
                 </a>
 
-                <a href="#"
-                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
+                <a href="{{ route('products.index') }}"
+                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+                   {{ request()->routeIs('products.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
                     Products
                 </a>
 
-                <a href="#"
-                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
+                <a href="{{ route('categories.index') }}"
+                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+                   {{ request()->routeIs('categories.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
                     Categories
                 </a>
 
-                <a href="#"
-                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
+                <a href="{{ route('suppliers.index') }}"
+                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+                   {{ request()->routeIs('suppliers.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
                     Suppliers
                 </a>
             </div>
