@@ -11,6 +11,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+Route::resource('products', \App\Http\Controllers\ProductController::class)->middleware(['auth', 'role:admin']);
+
 
 Route::resource('suppliers', \App\Http\Controllers\SupplierController::class)->middleware(['auth', 'role:admin']);
 
