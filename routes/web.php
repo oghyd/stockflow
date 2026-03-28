@@ -11,6 +11,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+Route::get('/admin/stock/report', [App\Http\Controllers\StockReportController::class, 'export'])->name('stock.report');
+
 Route::resource('products', \App\Http\Controllers\ProductController::class)->middleware(['auth', 'role:admin']);
 
 
