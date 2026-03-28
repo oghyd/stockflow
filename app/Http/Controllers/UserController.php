@@ -4,42 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use App\Traits\Loggable;
 class UserController extends Controller
 {
+
     //Display the list of users
-    public function index(Request $request)
+    public function index()
     {
-        $role = $request->get('role');
-        $email = $request->get('email');
-
-        $users = User::query()
-            ->select('users.*')
-            ->leftJoin('model_has_roles', function ($join) {
-                $join->on('users.id', '=', 'model_has_roles.model_id')
-                    ->where('model_has_roles.model_type', '=', User::class);
-            })
-            ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->when($role, function ($query, $role) {
-                $query->where('roles.name', $role);
-            })
-            ->when($email, function ($query, $email) {
-                $query->where('users.email', 'like', '%' . $email . '%');
-            })
-            ->orderByRaw("
-                CASE roles.name
-                    WHEN 'admin' THEN 1
-                    WHEN 'fournisseur' THEN 2
-                    WHEN 'vendeur' THEN 3
-                    ELSE 4
-                END
-            ")
-            ->orderBy('users.name')
-            ->paginate(10)
-            ->withQueryString();
-
-        return view('admin.users.index', compact('users', 'role', 'email'));
+        return view('admin.users.index');
     }
 
     //Displays the form (user creation) NO DB involvment
@@ -56,7 +30,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users', //email must be unique (important)
             'password' => 'required|min:6',
-            'role' => 'required'
+            'role' => 'required|exists:roles,name'
         ]);
 
         $user = User::create([ //calling the create function
@@ -89,8 +63,8 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
-            'email' => 'required|email',
-            'role' => 'required'
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'role' => 'required|exists:roles,name'
         ]);
 
         
