@@ -28,41 +28,48 @@
         </div>
 
         <!-- Admin -->
-        @role('admin')
-            <div class="space-y-1">
-                <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400">Admin</p>
+       <!-- Admin -->
+       @role('admin')
+    <div class="space-y-1">
+        <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400">Admin</p>
 
-                <a href="{{ route('admin.users.index') }}"
-                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
-                   {{ request()->routeIs('admin.users.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                    Users
-                </a>
+        <a href="{{ route('admin.users.index') }}"
+           class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+           {{ request()->routeIs('admin.users.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+            Users
+        </a>
 
-                <a href="{{ route('admin.activity.index') }}"
-                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
-                   {{ request()->routeIs('admin.activity.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                    Activity Log
-                </a>
+        <a href="{{ route('admin.activity.index') }}"
+           class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+           {{ request()->routeIs('admin.activity.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+            Activity Log
+        </a>
 
-                <a href="{{ route('products.index') }}"
-                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
-                   {{ request()->routeIs('products.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                    Products
-                </a>
+        <a href="{{ route('products.index') }}"
+           class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+           {{ request()->routeIs('products.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+            Products
+        </a>
 
-                <a href="{{ route('categories.index') }}"
-                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
-                   {{ request()->routeIs('categories.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                    Categories
-                </a>
+        <a href="{{ route('categories.index') }}"
+           class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+           {{ request()->routeIs('categories.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+            Categories
+        </a>
 
-                <a href="{{ route('suppliers.index') }}"
-                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
-                   {{ request()->routeIs('suppliers.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                    Suppliers
-                </a>
-            </div>
-        @endrole
+        <a href="{{ route('suppliers.index') }}"
+           class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+           {{ request()->routeIs('suppliers.*') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+            Suppliers
+        </a>
+
+        <a href="{{ route('stock.report') }}"
+           class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+           {{ request()->routeIs('stock.report') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+            Rapport Stock Bas
+        </a>
+    </div>
+@endrole
 
         <!-- Vendeur -->
         @role('vendeur')
