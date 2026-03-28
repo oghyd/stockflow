@@ -6,14 +6,40 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Traits\Loggable;
-
 class UserController extends Controller
 {
     //Display the list of users
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::latest()->paginate(10); //latest first and limit to 10
-        return view('admin.users.index', compact('users'));
+        $role = $request->get('role');
+        $email = $request->get('email');
+
+        $users = User::query()
+            ->select('users.*')
+            ->leftJoin('model_has_roles', function ($join) {
+                $join->on('users.id', '=', 'model_has_roles.model_id')
+                    ->where('model_has_roles.model_type', '=', User::class);
+            })
+            ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->when($role, function ($query, $role) {
+                $query->where('roles.name', $role);
+            })
+            ->when($email, function ($query, $email) {
+                $query->where('users.email', 'like', '%' . $email . '%');
+            })
+            ->orderByRaw("
+                CASE roles.name
+                    WHEN 'admin' THEN 1
+                    WHEN 'fournisseur' THEN 2
+                    WHEN 'vendeur' THEN 3
+                    ELSE 4
+                END
+            ")
+            ->orderBy('users.name')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.users.index', compact('users', 'role', 'email'));
     }
 
     //Displays the form (user creation) NO DB involvment
