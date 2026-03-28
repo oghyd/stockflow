@@ -1,13 +1,21 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-2xl font-bold text-gray-900">
-            Dashboard
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="max-w-4xl">
-        <div class="rounded-xl bg-white shadow-sm border border-gray-100 p-6">
-            <p class="text-gray-900 font-medium">You're logged in!</p>
+@section('content')
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Widget Alertes Stock -->
+            <div class="lg:col-span-2">
+                @livewire('dashboard.low-stock-widget')
+            </div>
+
+            <!-- Autres widgets (à ajouter plus tard) -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-lg font-bold text-gray-800 mb-4">Bienvenue</h2>
+                <p class="text-gray-600">{{ Auth::user()->name }}</p>
+                <p class="text-sm text-gray-500 mt-2">Rôle: {{ Auth::user()->getRoleNames()->implode(', ') }}</p>
+            </div>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection

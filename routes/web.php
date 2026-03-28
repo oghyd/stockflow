@@ -12,6 +12,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+// Fournisseur routes
+Route::middleware(['auth', 'role:fournisseur'])->group(function () {
+    Route::get('/fournisseur/stock', [App\Http\Controllers\FournisseurStockController::class, 'index'])->name('fournisseur.stock');
+});
+
+
+Route::get('/admin/stock/report', [App\Http\Controllers\StockReportController::class, 'export'])->name('stock.report');
+
 Route::resource('products', \App\Http\Controllers\ProductController::class)->middleware(['auth', 'role:admin']);
 
 

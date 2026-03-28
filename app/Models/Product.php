@@ -30,4 +30,21 @@ class Product extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+
+
+
+
+// Scopes
+public function scopeLowStock($query)
+{
+    return $query->whereColumn('stock_quantity', '<=', 'alert_threshold');
+}
+
+public function scopeOutOfStock($query)
+{
+    return $query->where('stock_quantity', 0);
+}
+
+
+
 }
