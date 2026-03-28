@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Traits\Loggable;
+
 class UserController extends Controller
 {
     //Display the list of users
@@ -14,14 +16,14 @@ class UserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
-    //Create user
+    //Displays the form (user creation) NO DB involvment
     public function create()
     {
         $roles = Role::all();
         return view('admin.users.create', compact('roles'));
     }
 
-    //Submitted form after user creation
+    //Handles form (user creation)
     public function store(Request $request)
     {
         $data = $request->validate([ //validate before saving to DB, never trust input from a form
@@ -39,16 +41,24 @@ class UserController extends Controller
 
         $user->assignRole($data['role']);
 
+        //Log activity (here user creation)
+        Loggable::recordActivity(
+            'user_created',
+            $user,
+            'User '.$user->name.' was created'
+        );
+
         return redirect()->route('admin.users.index');
     }
 
-    //Edit a specific user
+    //Displays form (edit user)
     public function edit(User $user)
     {
         $roles = Role::all();
         return view('admin.users.edit', compact('user', 'roles')); //send user AND role so the form can show both current vals
     }
 
+    //Handles form (edit user)
     public function update(Request $request, User $user)
     {
         $data = $request->validate([
@@ -65,11 +75,24 @@ class UserController extends Controller
 
         $user->syncRoles([$data['role']]); //we don't use assignRole because we want to change the role not add nother one
 
+        Loggable::recordActivity(
+            'user_updated',
+            $user,
+            'User '.$user->name.' was updated'
+        );
+
         return redirect()->route('admin.users.index');
     }
 
     public function destroy(User $user)
     {
+        //Here we log before to be able to record the user data (important)
+        Loggable::recordActivity(
+            'user_deleted',
+            $user,
+            'User '.$user->name.' was deleted'
+        );
+
         $user->delete();
         return back();
     }
