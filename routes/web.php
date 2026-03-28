@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FournisseurStockController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -19,13 +20,11 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // Fournisseur routes
     Route::middleware('role:fournisseur')->group(function () {
         Route::get('/fournisseur/stock', [FournisseurStockController::class, 'index'])
             ->name('fournisseur.stock');
     });
 
-    // Admin routes
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/activity', [ActivityLogController::class, 'index'])
             ->name('activity.index');
@@ -33,7 +32,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class);
     });
 
-    // Admin-only resources
     Route::resource('products', ProductController::class)
         ->middleware('role:admin');
 
@@ -47,7 +45,15 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:admin')
         ->name('stock.report');
 
-    // Profile routes
+    Route::get('/caisse', function () {
+        return view('caisse.index');
+    })->name('caisse.index');
+
+    Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+    Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
+    Route::get('/sales/{sale}/receipt', [SaleController::class, 'receipt'])->name('sales.receipt');
+    Route::get('/sales/{sale}/receipt/download', [SaleController::class, 'downloadReceipt'])->name('sales.receipt.download');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
