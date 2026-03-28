@@ -1,10 +1,117 @@
 <x-app-layout>
     <x-slot name="header">
-        Users
+        <div class="text-center">
+            <h2 class="text-2xl font-bold text-gray-900">Users</h2>
+            <p class="mt-1 text-sm text-gray-500">Manage admins, vendeurs, and fournisseurs.</p>
+        </div>
     </x-slot>
 
-    <div class="bg-white rounded-xl shadow p-6">
-        <h2 class="text-lg font-semibold mb-2">Users management</h2>
-        <p class="text-gray-600">User CRUD will be added here next.</p>
+    <div class="mx-auto max-w-5xl">
+        <div class="mb-6 flex justify-center">
+            <a href="{{ route('admin.users.create') }}"
+               class="inline-flex items-center rounded-lg border border-gray-800 bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-100">
+                + Create User
+            </a>
+        </div>
+
+        <div class="w-full max-w-6xl mx-auto">
+        <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+
+            <!-- Header inside card -->
+            <div class="border-b border-gray-200 px-6 py-4 text-center">
+                <h3 class="text-lg font-semibold text-gray-900">Users List</h3>
+                <p class="mt-1 text-sm text-gray-500">
+                    Manage admins, vendeurs, and fournisseurs.
+                </p>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-4 text-center font-semibold text-gray-700">Name</th>
+                            <th class="px-6 py-4 text-center font-semibold text-gray-700">Email</th>
+                            <th class="px-6 py-4 text-center font-semibold text-gray-700">Role</th>
+                            <th class="px-6 py-4 text-center font-semibold text-gray-700">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-gray-200">
+                        @forelse($users as $user)
+                            @php
+                                $role = $user->getRoleNames()->first();
+                            @endphp
+
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-6 py-4 text-center font-medium text-gray-900">
+                                    {{ $user->name }}
+                                </td>
+
+                                <td class="px-6 py-4 text-center text-gray-700">
+                                    {{ $user->email }}
+                                </td>
+
+                                <td class="px-6 py-4 text-center">
+                                    @if($role === 'admin')
+                                        <span class="inline-flex rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-700">
+                                            Administrator
+                                        </span>
+                                    @elseif($role === 'vendeur')
+                                        <span class="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                                            Vendeur
+                                        </span>
+                                    @elseif($role === 'fournisseur')
+                                        <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                                            Fournisseur
+                                        </span>
+                                    @else
+                                        <span class="inline-flex rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
+                                            No Role
+                                        </span>
+                                    @endif
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center justify-center gap-4">
+                                        <a href="{{ route('admin.users.edit', $user) }}"
+                                        class="font-medium text-indigo-600 transition hover:text-indigo-800">
+                                            Edit
+                                        </a>
+
+                                        <form method="POST"
+                                            action="{{ route('admin.users.destroy', $user) }}"
+                                            onsubmit="return confirm('Delete this user?');">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit"
+                                                    class="font-medium text-red-600 transition hover:text-red-800">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                                    No users found.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            @if ($users instanceof \Illuminate\Contracts\Pagination\Paginator || $users instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator)
+                <div class="border-t border-gray-200 px-6 py-4">
+                    {{ $users->links() }}
+                </div>
+            @endif
+
+        </div>
+    </div>
     </div>
 </x-app-layout>

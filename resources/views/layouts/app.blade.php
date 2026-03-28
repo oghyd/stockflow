@@ -7,30 +7,42 @@
 
     <title>{{ config('app.name', 'StockFlow') }}</title>
 
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
 </head>
-<body class="font-sans antialiased bg-gray-100 text-gray-900">
+<body class="bg-gray-100 text-gray-900 min-h-screen">
     <div class="min-h-screen flex">
         @auth
             @include('layouts.navigation')
         @endauth
 
-        <div class="flex-1 min-w-0">
-            @isset($header)
+        <div class="flex-1 flex flex-col min-w-0">
+            @auth
                 <header class="bg-white border-b border-gray-200">
-                    <div class="px-6 py-5">
-                        {{ $header }}
+                    <div class="px-6 py-4 flex items-center justify-between">
+                        <div>
+                            <h1 class="text-xl font-semibold">
+                                {{ $header ?? 'Dashboard' }}
+                            </h1>
+                        </div>
+
+                        <div class="text-sm text-gray-600">
+                            {{ auth()->user()->name }}
+                        </div>
                     </div>
                 </header>
-            @endisset
+            @endauth
 
-            <main class="p-6">
-                {{ $slot }}
+            <main class="flex-1 p-6 flex justify-center">
+                <div class="w-full max-w-7xl">
+                    {{ $slot ?? '' }}
+
+                    @yield('content')
+                </div>
             </main>
         </div>
     </div>
+
+    @livewireScripts
 </body>
 </html>

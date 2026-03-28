@@ -12,9 +12,12 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::view('/users', 'admin.users.index')->name('users.index');
-        Route::view('/activity', 'admin.activity.index')->name('activity.index');
+    Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/activity', function () {
+            return view('admin.activity.index');
+        })->name('activity.index');
+
+        Route::resource('users', \App\Http\Controllers\UserController::class);
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
