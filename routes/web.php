@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FournisseurStockController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StockReportController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,32 +19,38 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-// Fournisseur routes
-Route::middleware(['auth', 'role:fournisseur'])->group(function () {
-    Route::get('/fournisseur/stock', [App\Http\Controllers\FournisseurStockController::class, 'index'])->name('fournisseur.stock');
-});
-
-
-Route::get('/admin/stock/report', [App\Http\Controllers\StockReportController::class, 'export'])->name('stock.report');
-
-Route::resource('products', \App\Http\Controllers\ProductController::class)->middleware(['auth', 'role:admin']);
-
-
-Route::resource('suppliers', \App\Http\Controllers\SupplierController::class)->middleware(['auth', 'role:admin']);
-
-Route::resource('categories', \App\Http\Controllers\CategoryController::class)->middleware(['auth', 'role:admin']);
-
-    Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/activity', function () {
-            return view('admin.activity.index');
-        })->name('activity.index');
-
-        Route::resource('users', \App\Http\Controllers\UserController::class);
+    // Fournisseur routes
+    Route::middleware('role:fournisseur')->group(function () {
+        Route::get('/fournisseur/stock', [FournisseurStockController::class, 'index'])
+            ->name('fournisseur.stock');
     });
 
+    // Admin routes
+    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/activity', [ActivityLogController::class, 'index'])
+            ->name('activity.index');
+
+        Route::resource('users', UserController::class);
+    });
+
+    // Admin-only resources
+    Route::resource('products', ProductController::class)
+        ->middleware('role:admin');
+
+    Route::resource('suppliers', SupplierController::class)
+        ->middleware('role:admin');
+
+    Route::resource('categories', CategoryController::class)
+        ->middleware('role:admin');
+
+    Route::get('/admin/stock/report', [StockReportController::class, 'export'])
+        ->middleware('role:admin')
+        ->name('stock.report');
+
+    // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
