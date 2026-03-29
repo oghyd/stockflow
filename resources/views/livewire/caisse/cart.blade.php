@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <div class="lg:col-span-2">
-        <div class="bg-white shadow-sm sm:rounded-lg p-6">
+        <div class="bg-white dark:bg-gray-900 shadow-sm sm:rounded-lg p-6">
             <h3 class="text-lg font-semibold mb-4">Recherche de produits</h3>
 
             @if (session()->has('error'))
@@ -20,16 +20,16 @@
                     type="text"
                     wire:model.live="search"
                     placeholder="Rechercher un produit par nom ou code-barres..."
-                    class="w-full border-gray-300 rounded-md shadow-sm"
+                    class="w-full rounded-md shadow-sm border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400"
                 >
             </div>
 
-            <div class="border rounded-lg p-4 bg-gray-50 space-y-2">
+            <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 space-y-2">
                 @forelse($this->products as $product)
                     <div class="flex items-center justify-between border-b pb-2">
                         <div>
                             <div class="font-medium">{{ $product->name }}</div>
-                            <div class="text-sm text-gray-500">
+                            <div class="text-sm text-orange-500">
                                 {{ number_format($product->sale_price, 2) }} DH | Stock: {{ $product->stock_quantity }}
                             </div>
                         </div>
@@ -47,12 +47,12 @@
             </div>
         </div>
 
-        <div class="bg-white shadow-sm sm:rounded-lg p-6 mt-6">
+        <div class="bg-white dark:bg-gray-900 shadow-sm sm:rounded-lg p-6 mt-6">
             <h3 class="text-lg font-semibold mb-4">Panier</h3>
 
             <div class="overflow-x-auto">
                 <table class="min-w-full border border-gray-200">
-                    <thead class="bg-gray-100">
+                    <thead class="bg-gray-100 dark:bg-gray-800">
                         <tr>
                             <th class="px-4 py-2 text-left border">Produit</th>
                             <th class="px-4 py-2 text-left border">Prix Unitaire</th>
@@ -68,12 +68,16 @@
                                 <td class="px-4 py-2 border">{{ number_format($item['unit_price'], 2) }} DH</td>
                                 <td class="px-4 py-2 border">
                                     <input
-                                        type="number"
-                                        min="1"
-                                        value="{{ $item['quantity'] }}"
-                                        wire:change="updateQuantity({{ $item['product_id'] }}, $event.target.value)"
-                                        class="w-20 border-gray-300 rounded-md shadow-sm"
-                                    >
+    type="number"
+    min="1"
+    value="{{ $item['quantity'] }}"
+    wire:change="updateQuantity({{ $item['product_id'] }}, $event.target.value)"
+    class="w-20 rounded-md shadow-sm 
+           border-gray-300 dark:border-gray-600 
+           bg-white dark:bg-gray-800 
+           text-gray-900 dark:text-gray-100 
+           focus:ring-indigo-500 focus:border-indigo-500"
+>
                                 </td>
                                 <td class="px-4 py-2 border">{{ number_format($item['subtotal'], 2) }} DH</td>
                                 <td class="px-4 py-2 border">
@@ -99,7 +103,7 @@
     </div>
 
     <div class="lg:col-span-1">
-        <div class="bg-white shadow-sm sm:rounded-lg p-6 sticky top-6">
+        <div class="bg-white dark:bg-gray-900 shadow-sm sm:rounded-lg p-6 sticky top-6">
             <h3 class="text-lg font-semibold mb-4">Résumé de la vente</h3>
 
             <div class="space-y-3">

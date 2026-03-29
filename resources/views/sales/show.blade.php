@@ -7,7 +7,7 @@
 
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+            <div class="bg-white dark:bg-gray-900 shadow-sm sm:rounded-lg p-6">
                 <p><strong>Vendeur:</strong> {{ $sale->user->name ?? 'N/A' }}</p>
                 <p><strong>Total TTC:</strong> {{ number_format($sale->total_ttc, 2) }} DH</p>
                 <p><strong>Date:</strong> {{ $sale->validated_at ?? $sale->created_at }}</p>

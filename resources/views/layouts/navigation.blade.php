@@ -94,24 +94,29 @@
             </div>
         @endrole
 
-        <!-- Vendeur -->
-        @role('vendeur')
-            <div class="space-y-1">
-                <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
-                    Vendeur
-                </p>
+<!-- Ventes -->
+<div class="space-y-1">
+    <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
+        Ventes
+    </p>
 
-                <a href="#"
-                   class="flex cursor-not-allowed items-center rounded-lg bg-gray-50 px-3 py-2.5 text-sm font-medium text-gray-400 dark:bg-gray-800 dark:text-gray-500">
-                    Caisse
-                </a>
+    <a href="{{ route('caisse.index') }}"
+       class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+       {{ request()->routeIs('caisse.*')
+            ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
+        Caisse
+    </a>
 
-                <a href="#"
-                   class="flex cursor-not-allowed items-center rounded-lg bg-gray-50 px-3 py-2.5 text-sm font-medium text-gray-400 dark:bg-gray-800 dark:text-gray-500">
-                    Sales History
-                </a>
-            </div>
-        @endrole
+    <a href="{{ route('sales.index') }}"
+       class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+       {{ request()->routeIs('sales.*')
+            ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
+        Historique des ventes
+    </a>
+</div>
+
 
         <!-- Fournisseur -->
         @role('fournisseur')
