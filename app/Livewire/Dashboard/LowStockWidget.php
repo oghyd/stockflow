@@ -16,7 +16,7 @@ class LowStockWidget extends Component
         $outOfStockCount = Product::where('stock_quantity', 0)->count();
         $lowStockCount = $lowStockProducts->count();
 
-        return view('livewire.low-stock-widget', [
+        return view('livewire.dashboard.low-stock-widget', [
             'lowStockProducts' => $lowStockProducts,
             'lowStockCount' => $lowStockCount,
             'outOfStockCount' => $outOfStockCount,
