@@ -28,6 +28,9 @@ Route::middleware('auth')->group(function () {
             return redirect()->route('fournisseur.stock');
         }
 
+        if ($user->hasRole('vendeur')) {
+            return redirect()->route('caisse.index');
+        }
         return view('dashboard');
     })->name('dashboard');
 
