@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Traits\Loggable;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -10,6 +11,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
+
         return view('categories.index', compact('categories'));
     }
 
@@ -20,14 +22,21 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
         ]);
 
-        Category::create($request->all());
+        $category = Category::create($data);
 
-        return redirect()->route('categories.index')
+        Loggable::recordActivity(
+            'category_created',
+            $category,
+            'Category "' . $category->name . '" was created'
+        );
+
+        return redirect()
+            ->route('categories.index')
             ->with('success', 'Catégorie créée avec succès');
     }
 
@@ -38,22 +47,36 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
         ]);
 
-        $category->update($request->all());
+        $category->update($data);
 
-        return redirect()->route('categories.index')
+        Loggable::recordActivity(
+            'category_updated',
+            $category,
+            'Category "' . $category->name . '" was updated'
+        );
+
+        return redirect()
+            ->route('categories.index')
             ->with('success', 'Catégorie modifiée avec succès');
     }
 
     public function destroy(Category $category)
     {
+        Loggable::recordActivity(
+            'category_deleted',
+            $category,
+            'Category "' . $category->name . '" was deleted'
+        );
+
         $category->delete();
 
-        return redirect()->route('categories.index')
+        return redirect()
+            ->route('categories.index')
             ->with('success', 'Catégorie supprimée avec succès');
     }
 }
