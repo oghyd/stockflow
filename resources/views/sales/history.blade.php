@@ -16,20 +16,27 @@
                         <div>Date: {{ $sale->validated_at ?? $sale->created_at }}</div>
 
                         <div class="mt-2 flex gap-2">
-                            <a
-                                href="{{ route('sales.show', $sale) }}"
-                                class="inline-block bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition"
-                            >
-                                Voir détails
-                            </a>
+    <a
+        href="{{ route('sales.show', $sale) }}"
+        class="inline-block bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition"
+    >
+        Voir détails
+    </a>
 
-                            <a
-                                href="{{ route('sales.receipt', $sale) }}"
-                                class="inline-block bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700 transition"
-                            >
-                                Télécharger reçu PDF
-                            </a>
-                        </div>
+    <a
+        href="{{ route('sales.receipt', $sale) }}"
+        class="inline-block bg-gray-700 text-white px-3 py-1 rounded-md hover:bg-gray-800 transition"
+    >
+        Voir reçu
+    </a>
+
+    <a
+        href="{{ route('sales.receipt.download', $sale) }}"
+        class="inline-block bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700 transition"
+    >
+        Télécharger PDF
+    </a>
+</div>
                     </div>
                 @empty
                     <p>Aucune vente trouvée.</p>
