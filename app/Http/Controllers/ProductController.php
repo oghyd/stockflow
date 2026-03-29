@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // ✅ ici en haut
 
 class ProductController extends Controller
 {
@@ -24,22 +25,20 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'purchase_price' => 'required|numeric|min:0',
-            'sale_price' => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
-            'alert_threshold' => 'required|integer|min:0',
-            'barcode' => 'nullable|string|unique:products',
-            'category_id' => 'required|exists:categories,id',
-            'supplier_id' => 'required|exists:suppliers,id',
+        $supplier = Supplier::where('user_id', Auth::id())->first();
+
+        Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'purchase_price' => $request->purchase_price,
+            'sale_price' => $request->sale_price,
+            'stock_quantity' => $request->stock_quantity,
+            'alert_threshold' => 5,
+            'category_id' => $request->category_id,
+            'supplier_id' => $supplier->id, // 🔥 automatiquement
         ]);
 
-        Product::create($request->all());
-
-        return redirect()->route('products.index')
-            ->with('success', 'Produit créé avec succès');
+        return redirect()->back()->with('success', 'Produit ajouté');
     }
 
     public function edit(Product $product)
@@ -60,7 +59,7 @@ class ProductController extends Controller
             'alert_threshold' => 'required|integer|min:0',
             'barcode' => 'nullable|string|unique:products,barcode,' . $product->id,
             'category_id' => 'required|exists:categories,id',
-            'supplier_id' => 'required|exists:suppliers,id',
+            // 'supplier_id' => 'required|exists:suppliers,id', ❌ on ne veut plus le valider
         ]);
 
         $product->update($request->all());
