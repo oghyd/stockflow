@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Supplier;
 use App\Traits\Loggable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -27,17 +29,29 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $supplier = Supplier::where('user_id', Auth::id())->first();
+
+        $rules = [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'purchase_price' => 'required|numeric|min:0',
             'sale_price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'alert_threshold' => 'required|integer|min:0',
-            'barcode' => 'nullable|string|unique:products',
+            'barcode' => 'nullable|string|unique:products,barcode',
             'category_id' => 'required|exists:categories,id',
-            'supplier_id' => 'required|exists:suppliers,id',
-        ]);
+        ];
+
+        if (!$supplier) {
+            $rules['alert_threshold'] = 'required|integer|min:0';
+            $rules['supplier_id'] = 'required|exists:suppliers,id';
+        }
+
+        $data = $request->validate($rules);
+
+        if ($supplier) {
+            $data['supplier_id'] = $supplier->id;
+            $data['alert_threshold'] = $data['alert_threshold'] ?? 5;
+        }
 
         $product = Product::create($data);
 
@@ -62,17 +76,29 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $data = $request->validate([
+        $supplier = Supplier::where('user_id', Auth::id())->first();
+
+        $rules = [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'purchase_price' => 'required|numeric|min:0',
             'sale_price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'alert_threshold' => 'required|integer|min:0',
-            'barcode' => 'nullable|string|unique:products,barcode,' . $product->id,
+            'barcode' => ['nullable', 'string', Rule::unique('products', 'barcode')->ignore($product->id)],
             'category_id' => 'required|exists:categories,id',
-            'supplier_id' => 'required|exists:suppliers,id',
-        ]);
+        ];
+
+        if (!$supplier) {
+            $rules['alert_threshold'] = 'required|integer|min:0';
+            $rules['supplier_id'] = 'required|exists:suppliers,id';
+        }
+
+        $data = $request->validate($rules);
+
+        if ($supplier) {
+            $data['supplier_id'] = $supplier->id;
+            $data['alert_threshold'] = $data['alert_threshold'] ?? $product->alert_threshold ?? 5;
+        }
 
         $product->update($data);
 
