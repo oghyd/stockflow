@@ -1,16 +1,27 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- LEFT SIDE -->
     <div class="lg:col-span-2">
+HEAD
         <div class="bg-white dark:bg-gray-900 shadow-sm sm:rounded-lg p-6">
             <h3 class="text-lg font-semibold mb-4">Recherche de produits</h3>
 
+
+        <!-- SEARCH -->
+        <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
+                Recherche de produits
+            </h3>
+ d09a5c2c7158e1ff3e5ef332978989f757ca40f6
+
             @if (session()->has('error'))
-                <div class="mb-4 p-3 rounded bg-red-100 text-red-700">
+                <div class="mb-4 p-3 rounded bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400">
                     {{ session('error') }}
                 </div>
             @endif
 
             @if (session()->has('success'))
-                <div class="mb-4 p-3 rounded bg-green-100 text-green-700">
+                <div class="mb-4 p-3 rounded bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
                     {{ session('success') }}
                 </div>
             @endif
@@ -19,17 +30,34 @@
                 <input
                     type="text"
                     wire:model.live="search"
+ HEAD
                     placeholder="Rechercher un produit par nom ou code-barres..."
                     class="w-full rounded-md shadow-sm border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400"
                 >
             </div>
 
             <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 space-y-2">
+
+                    placeholder="Rechercher un produit..."
+                    class="w-full rounded-md border-gray-300 bg-white text-gray-900 shadow-sm
+                           dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+                >
+            </div>
+
+            <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-700/40 space-y-2">
+ d09a5c2c7158e1ff3e5ef332978989f757ca40f6
                 @forelse($this->products as $product)
-                    <div class="flex items-center justify-between border-b pb-2">
+                    <div class="flex items-center justify-between border-b pb-2 dark:border-gray-600">
                         <div>
+ HEAD
                             <div class="font-medium">{{ $product->name }}</div>
                             <div class="text-sm text-orange-500">
+
+                            <div class="font-medium text-gray-900 dark:text-gray-100">
+                                {{ $product->name }}
+                            </div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">
+ d09a5c2c7158e1ff3e5ef332978989f757ca40f6
                                 {{ number_format($product->sale_price, 2) }} DH | Stock: {{ $product->stock_quantity }}
                             </div>
                         </div>
@@ -42,32 +70,54 @@
                         </button>
                     </div>
                 @empty
-                    <p class="text-sm text-gray-500">Aucun produit trouvé.</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Aucun produit trouvé.
+                    </p>
                 @endforelse
             </div>
         </div>
 
+ HEAD
         <div class="bg-white dark:bg-gray-900 shadow-sm sm:rounded-lg p-6 mt-6">
             <h3 class="text-lg font-semibold mb-4">Panier</h3>
 
             <div class="overflow-x-auto">
                 <table class="min-w-full border border-gray-200">
                     <thead class="bg-gray-100 dark:bg-gray-800">
+
+        <!-- CART -->
+        <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6 mt-6 border border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
+                Panier
+            </h3>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full border border-gray-200 dark:border-gray-700">
+                    <thead class="bg-gray-100 dark:bg-gray-900/40">
+ d09a5c2c7158e1ff3e5ef332978989f757ca40f6
                         <tr>
-                            <th class="px-4 py-2 text-left border">Produit</th>
-                            <th class="px-4 py-2 text-left border">Prix Unitaire</th>
-                            <th class="px-4 py-2 text-left border">Quantité</th>
-                            <th class="px-4 py-2 text-left border">Sous-total</th>
-                            <th class="px-4 py-2 text-left border">Action</th>
+                            <th class="px-4 py-2 text-left border text-gray-700 dark:text-gray-200 dark:border-gray-700">Produit</th>
+                            <th class="px-4 py-2 text-left border text-gray-700 dark:text-gray-200 dark:border-gray-700">Prix</th>
+                            <th class="px-4 py-2 text-left border text-gray-700 dark:text-gray-200 dark:border-gray-700">Quantité</th>
+                            <th class="px-4 py-2 text-left border text-gray-700 dark:text-gray-200 dark:border-gray-700">Sous-total</th>
+                            <th class="px-4 py-2 text-left border text-gray-700 dark:text-gray-200 dark:border-gray-700">Action</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @forelse($this->cartItems as $item)
-                            <tr>
-                                <td class="px-4 py-2 border">{{ $item['name'] }}</td>
-                                <td class="px-4 py-2 border">{{ number_format($item['unit_price'], 2) }} DH</td>
-                                <td class="px-4 py-2 border">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/40">
+                                <td class="px-4 py-2 border text-gray-900 dark:text-gray-100 dark:border-gray-700">
+                                    {{ $item['name'] }}
+                                </td>
+
+                                <td class="px-4 py-2 border text-gray-700 dark:text-gray-300 dark:border-gray-700">
+                                    {{ number_format($item['unit_price'], 2) }} DH
+                                </td>
+
+                                <td class="px-4 py-2 border dark:border-gray-700">
                                     <input
+ HEAD
     type="number"
     min="1"
     value="{{ $item['quantity'] }}"
@@ -78,9 +128,22 @@
            text-gray-900 dark:text-gray-100 
            focus:ring-indigo-500 focus:border-indigo-500"
 >
+
+                                        type="number"
+                                        min="1"
+                                        value="{{ $item['quantity'] }}"
+                                        wire:change="updateQuantity({{ $item['product_id'] }}, $event.target.value)"
+                                        class="w-20 rounded-md border-gray-300 bg-white text-gray-900 shadow-sm
+                                               dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+                                    >
+ d09a5c2c7158e1ff3e5ef332978989f757ca40f6
                                 </td>
-                                <td class="px-4 py-2 border">{{ number_format($item['subtotal'], 2) }} DH</td>
-                                <td class="px-4 py-2 border">
+
+                                <td class="px-4 py-2 border text-gray-700 dark:text-gray-300 dark:border-gray-700">
+                                    {{ number_format($item['subtotal'], 2) }} DH
+                                </td>
+
+                                <td class="px-4 py-2 border dark:border-gray-700">
                                     <button
                                         wire:click="removeItem({{ $item['product_id'] }})"
                                         class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
@@ -91,8 +154,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-4 py-6 text-center text-gray-500 border">
-                                    Aucun produit dans le panier pour le moment.
+                                <td colspan="5" class="px-4 py-6 text-center text-gray-500 dark:text-gray-400 border dark:border-gray-700">
+                                    Aucun produit dans le panier.
                                 </td>
                             </tr>
                         @endforelse
@@ -102,18 +165,26 @@
         </div>
     </div>
 
+    <!-- RIGHT SIDE -->
     <div class="lg:col-span-1">
+ HEAD
         <div class="bg-white dark:bg-gray-900 shadow-sm sm:rounded-lg p-6 sticky top-6">
             <h3 class="text-lg font-semibold mb-4">Résumé de la vente</h3>
 
+        <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6 sticky top-6 border border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
+                Résumé de la vente
+            </h3>
+ d09a5c2c7158e1ff3e5ef332978989f757ca40f6
+
             <div class="space-y-3">
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Nombre d’articles</span>
+                <div class="flex justify-between text-gray-600 dark:text-gray-300">
+                    <span>Articles</span>
                     <span class="font-medium">{{ $this->itemsCount }}</span>
                 </div>
 
-                <div class="flex justify-between text-lg font-bold">
-                    <span>Total TTC</span>
+                <div class="flex justify-between text-lg font-bold text-gray-900 dark:text-gray-100">
+                    <span>Total</span>
                     <span>{{ number_format($this->totalTtc, 2) }} DH</span>
                 </div>
             </div>
@@ -127,4 +198,5 @@
             </button>
         </div>
     </div>
+
 </div>
