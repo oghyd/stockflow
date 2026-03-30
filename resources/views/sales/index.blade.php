@@ -61,9 +61,12 @@
                         </table>
                     </div>
 
-                    <div class="mt-4">
-                        {{ $sales->links() }}
-                    </div>
+                    @if(method_exists($sales, 'links'))
+    <div class="mt-4">
+        {{ $sales->links() }}
+    </div>
+@endif
+
                 </div>
             </div>
         </div>

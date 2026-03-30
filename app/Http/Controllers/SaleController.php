@@ -38,7 +38,8 @@ class SaleController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
             } else {
-                $sales = collect(); // Aucune vente
+                // Retourner un paginator vide au lieu d'une collection
+                $sales = Sale::whereRaw('1 = 0')->paginate(15);
             }
         } elseif ($user->hasRole('vendeur')) {
             // Vendeur voit ses propres ventes
@@ -47,7 +48,8 @@ class SaleController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
         } else {
-            $sales = collect();
+            // Retourner un paginator vide
+            $sales = Sale::whereRaw('1 = 0')->paginate(15);
         }
         
         return view('sales.index', compact('sales'));
