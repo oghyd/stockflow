@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class);
     });
 
-    // Admin et Fournisseur peuvent accéder aux produits
+    // Admin et Fournisseur peuvent accéder aux produits (admin a tout et fournisseur seulement les siens)
     Route::resource('products', ProductController::class)
         ->middleware(['auth']);
 
@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/caisse', function () {
         return view('caisse.index');
-    })->name('caisse.index');
+    })->middleware('role:admin')->name('caisse.index');
 
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
