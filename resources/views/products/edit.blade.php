@@ -19,11 +19,16 @@
                                    required>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="barcode" class="mb-2 block font-bold text-gray-700 dark:text-gray-300">Code-barres</label>
-                            <input type="text" name="barcode" id="barcode" value="{{ old('barcode', $product->barcode) }}"
-                                   class="w-full rounded border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100">
-                        </div>
+<div class="mb-4">
+    <label for="barcode" class="block text-gray-700 dark:text-gray-300 font-bold mb-2">Code-barres *</label>
+    <input type="text" name="barcode" id="barcode" value="{{ old('barcode', $product->barcode) }}" 
+           class="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+           required>
+    @error('barcode')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
 
                         <div class="mb-4">
                             <label for="category_id" class="mb-2 block font-bold text-gray-700 dark:text-gray-300">Catégorie *</label>

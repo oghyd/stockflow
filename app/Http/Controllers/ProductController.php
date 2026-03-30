@@ -75,7 +75,7 @@ class ProductController extends Controller
             'purchase_price' => 'required|numeric|min:0',
             'sale_price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'barcode' => 'nullable|string|unique:products,barcode',
+            'barcode' => 'required|string|unique:products,barcode',
             'category_id' => 'required|exists:categories,id',
         ];
 
@@ -122,7 +122,7 @@ class ProductController extends Controller
             'purchase_price' => 'required|numeric|min:0',
             'sale_price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'barcode' => ['nullable', 'string', Rule::unique('products', 'barcode')->ignore($product->id)],
+            'barcode' => ['required', 'string', Rule::unique('products', 'barcode')->ignore($product->id)],
             'category_id' => 'required|exists:categories,id',
         ];
 

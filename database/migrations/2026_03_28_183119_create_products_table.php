@@ -16,7 +16,7 @@ return new class extends Migration
             $table->decimal('sale_price', 10, 2);
             $table->integer('stock_quantity')->default(0);
             $table->integer('alert_threshold')->default(5);
-            $table->string('barcode')->nullable()->unique();
+            $table->string('barcode')->unique();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
             $table->timestamps();
