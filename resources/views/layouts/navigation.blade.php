@@ -59,6 +59,14 @@
                         : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
                     Activity Log
                 </a>
+                
+                <a href="{{ route('caisse.index') }}"
+                class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+                {{ request()->routeIs('caisse.*')
+                        ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
+                    Caisse
+                </a>
 
                 <a href="{{ route('products.index') }}"
                    class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
@@ -90,6 +98,14 @@
                         ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
                         : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
                     Rapport Stock Bas
+                </a>
+
+                <a href="{{ route('sales.index') }}"
+                class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+                {{ request()->routeIs('sales.*')
+                        ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
+                    Historique des ventes
                 </a>
             </div>
         @endrole
