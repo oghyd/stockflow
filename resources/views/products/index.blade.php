@@ -105,7 +105,7 @@
                     <div class="overflow-x-auto">
                         <table class="min-w-full border border-gray-200 dark:border-gray-700">
                             <thead class="bg-gray-100 dark:bg-gray-900/40">
-                                32
+                                
                                     <th class="border border-gray-200 px-4 py-2 text-gray-700 dark:border-gray-700 dark:text-gray-200">ID</th>
                                     <th class="border border-gray-200 px-4 py-2 text-gray-700 dark:border-gray-700 dark:text-gray-200">Nom</th>
                                     <th class="border border-gray-200 px-4 py-2 text-gray-700 dark:border-gray-700 dark:text-gray-200">Catégorie</th>
