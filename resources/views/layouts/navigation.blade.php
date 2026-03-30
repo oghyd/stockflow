@@ -94,46 +94,55 @@
             </div>
         @endrole
 
-<!-- Ventes -->
-<div class="space-y-1">
-    <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
-        Ventes
-    </p>
+    <!-- Fournisseur -->
+    @role('fournisseur')
+        <div class="space-y-1">
+            <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
+                Fournisseur
+            </p>
 
-    <a href="{{ route('caisse.index') }}"
-       class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
-       {{ request()->routeIs('caisse.*')
-            ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
-            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
-        Caisse
-    </a>
+            <a href="{{ route('products.index') }}"
+            class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+            {{ request()->routeIs('products.*')
+                    ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
+                Mes Produits
+            </a>
 
-    <a href="{{ route('sales.index') }}"
-       class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
-       {{ request()->routeIs('sales.*')
-            ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
-            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
-        Historique des ventes
-    </a>
-</div>
+            <a href="{{ route('sales.index') }}"
+            class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+            {{ request()->routeIs('sales.*')
+                    ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
+                Historique des ventes
+            </a>
+        </div>
+    @endrole
 
+    <!-- Vendeur -->
+    @role('vendeur')
+        <div class="space-y-1">
+            <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
+                Ventes
+            </p>
 
-       <!-- Fournisseur -->
-@role('fournisseur')
-    <div class="space-y-1">
-        <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
-            Fournisseur
-        </p>
+            <a href="{{ route('caisse.index') }}"
+            class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+            {{ request()->routeIs('caisse.*')
+                    ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
+                Caisse
+            </a>
 
-        <a href="{{ route('products.index') }}"
-           class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
-           {{ request()->routeIs('products.*')
-                ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
-            Mes Produits
-        </a>
-    </div>
-@endrole
+            <a href="{{ route('sales.index') }}"
+            class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+            {{ request()->routeIs('sales.*')
+                    ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
+                Historique des ventes
+            </a>
+        </div>
+    @endrole
 
     </nav>
 
