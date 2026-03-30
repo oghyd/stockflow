@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/caisse', function () {
         return view('caisse.index');
-    })->middleware('role:admin')->name('caisse.index');
+    })->middleware('role:admin|vendeur')->name('caisse.index');
 
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');

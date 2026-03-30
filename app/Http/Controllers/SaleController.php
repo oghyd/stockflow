@@ -52,7 +52,7 @@ class SaleController extends Controller
             $sales = Sale::whereRaw('1 = 0')->paginate(15);
         }
         
-        return view('sales.index', compact('sales'));
+        return view('sales.history', compact('sales'));
     }
 
     public function show(Sale $sale)
