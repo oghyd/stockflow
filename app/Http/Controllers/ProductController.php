@@ -12,11 +12,35 @@ use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['category', 'supplier'])->get();
+        $search = $request->get('search');
+        $categoryId = $request->get('category_id');
+        $supplierId = $request->get('supplier_id');
 
-        return view('products.index', compact('products'));
+        $products = Product::with(['category', 'supplier'])
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->when($categoryId, function ($query, $categoryId) {
+                $query->where('category_id', $categoryId);
+            })
+            ->when($supplierId, function ($query, $supplierId) {
+                $query->where('supplier_id', $supplierId);
+            })
+            ->get();
+
+        $categories = Category::orderBy('name')->get();
+        $suppliers = Supplier::orderBy('name')->get();
+
+        return view('products.index', compact(
+            'products',
+            'categories',
+            'suppliers',
+            'search',
+            'categoryId',
+            'supplierId'
+        ));
     }
 
     public function create()

@@ -25,6 +25,75 @@
                         </div>
                     @endif
 
+                    <!-- Filters -->
+                    <div class="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900/30">
+                        <form method="GET" action="{{ route('products.index') }}"
+                              class="grid grid-cols-1 gap-4 md:grid-cols-4">
+
+                            <div>
+                                <label for="search" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Rechercher par nom
+                                </label>
+                                <input
+                                    type="text"
+                                    name="search"
+                                    id="search"
+                                    value="{{ request('search') }}"
+                                    placeholder="Nom du produit..."
+                                    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:placeholder-gray-400"
+                                >
+                            </div>
+
+                            <div>
+                                <label for="category_id" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Filtrer par catégorie
+                                </label>
+                                <select
+                                    name="category_id"
+                                    id="category_id"
+                                    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                                >
+                                    <option value="">Toutes les catégories</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="supplier_id" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Filtrer par fournisseur
+                                </label>
+                                <select
+                                    name="supplier_id"
+                                    id="supplier_id"
+                                    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                                >
+                                    <option value="">Tous les fournisseurs</option>
+                                    @foreach($suppliers as $supplier)
+                                        <option value="{{ $supplier->id }}" {{ request('supplier_id') == $supplier->id ? 'selected' : '' }}>
+                                            {{ $supplier->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="flex items-end gap-2">
+                                <button type="submit"
+                                        class="rounded bg-blue-500 px-4 py-2 font-bold text-white transition hover:bg-blue-700">
+                                    Filtrer
+                                </button>
+
+                                <a href="{{ route('products.index') }}"
+                                   class="rounded bg-gray-500 px-4 py-2 font-bold text-white transition hover:bg-gray-600">
+                                    Reset
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+
                     <div class="overflow-x-auto">
                         <table class="min-w-full border border-gray-200 dark:border-gray-700">
                             <thead class="bg-gray-100 dark:bg-gray-900/40">
@@ -102,7 +171,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="10" class="border border-gray-200 px-4 py-2 text-center text-gray-500 dark:border-gray-700 dark:text-gray-400">
-                                            Aucun produit trouvé. Cliquez sur "Nouveau produit" pour commencer.
+                                            Aucun produit trouvé avec ces filtres.
                                         </td>
                                     </tr>
                                 @endforelse
