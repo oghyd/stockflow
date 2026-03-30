@@ -27,7 +27,6 @@ Route::middleware('auth')->group(function () {
             return redirect()->route('caisse.index');
         }
 
-        // Pour le fournisseur, on redirige vers la liste des produits
         if ($user->hasRole('fournisseur')) {
             return redirect()->route('products.index');
         }
@@ -39,25 +38,35 @@ Route::middleware('auth')->group(function () {
         Route::get('/activity', [ActivityLogController::class, 'index'])
             ->name('activity.index');
 
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+            ->name('dashboard');
 
         Route::resource('users', UserController::class);
     });
 
-    // Admin et Fournisseur peuvent accéder aux produits (admin a tout et fournisseur seulement les siens)
-    Route::resource('products', ProductController::class)
-        ->middleware(['auth']);
+    // Products:
+    // admin = full CRUD
+    // fournisseur = index/show only for their own products
+    Route::middleware('role:admin|fournisseur')->group(function () {
+        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+    });
 
-    Route::resource('suppliers', SupplierController::class)
-        ->middleware('role:admin');
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+        Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-    Route::resource('categories', CategoryController::class)
-        ->middleware('role:admin');
+        Route::resource('suppliers', SupplierController::class);
+        Route::resource('categories', CategoryController::class);
 
-    Route::get('/admin/stock/report', [StockReportController::class, 'export'])
-        ->middleware('role:admin')
-        ->name('stock.report');
+        Route::get('/admin/stock/report', [StockReportController::class, 'export'])
+            ->name('stock.report');
+    });
 
+    // Caisse = admin + vendeur only
     Route::get('/caisse', function () {
         return view('caisse.index');
     })->middleware('role:admin|vendeur')->name('caisse.index');
