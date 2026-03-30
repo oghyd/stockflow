@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\FournisseurStockController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleController;
@@ -24,20 +23,17 @@ Route::middleware('auth')->group(function () {
             return redirect()->route('admin.dashboard');
         }
 
-        if ($user->hasRole('fournisseur')) {
-            return redirect()->route('fournisseur.stock');
-        }
-
         if ($user->hasRole('vendeur')) {
             return redirect()->route('caisse.index');
         }
+
+        // Pour le fournisseur, on redirige vers la liste des produits
+        if ($user->hasRole('fournisseur')) {
+            return redirect()->route('products.index');
+        }
+
         return view('dashboard');
     })->name('dashboard');
-
-    Route::middleware('role:fournisseur')->group(function () {
-        Route::get('/fournisseur/stock', [FournisseurStockController::class, 'index'])
-            ->name('fournisseur.stock');
-    });
 
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/activity', [ActivityLogController::class, 'index'])
@@ -48,8 +44,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class);
     });
 
+    // Admin et Fournisseur peuvent accéder aux produits
     Route::resource('products', ProductController::class)
-        ->middleware('role:admin');
+        ->middleware(['auth']);
 
     Route::resource('suppliers', SupplierController::class)
         ->middleware('role:admin');

@@ -13,35 +13,49 @@ use Illuminate\Validation\Rule;
 class ProductController extends Controller
 {
     public function index(Request $request)
-    {
-        $search = $request->get('search');
-        $categoryId = $request->get('category_id');
-        $supplierId = $request->get('supplier_id');
+{
+    $user = Auth::user();
+    $search = $request->get('search');
+    $categoryId = $request->get('category_id');
+    $supplierId = $request->get('supplier_id');
 
-        $products = Product::with(['category', 'supplier'])
-            ->when($search, function ($query, $search) {
-                $query->where('name', 'like', '%' . $search . '%');
-            })
-            ->when($categoryId, function ($query, $categoryId) {
-                $query->where('category_id', $categoryId);
-            })
-            ->when($supplierId, function ($query, $supplierId) {
-                $query->where('supplier_id', $supplierId);
-            })
-            ->get();
+    $query = Product::with(['category', 'supplier']);
 
-        $categories = Category::orderBy('name')->get();
-        $suppliers = Supplier::orderBy('name')->get();
-
-        return view('products.index', compact(
-            'products',
-            'categories',
-            'suppliers',
-            'search',
-            'categoryId',
-            'supplierId'
-        ));
+    // Filtrer selon le rôle
+    if ($user->hasRole('fournisseur')) {
+        $supplier = Supplier::where('user_id', $user->id)->first();
+        if ($supplier) {
+            $query->where('supplier_id', $supplier->id);
+        } else {
+            $query->whereRaw('1 = 0'); // Aucun produit si le fournisseur n'est pas lié
+        }
     }
+
+    // Appliquer les filtres de recherche
+    $query->when($search, function ($query, $search) {
+        $query->where('name', 'like', '%' . $search . '%');
+    })
+    ->when($categoryId, function ($query, $categoryId) {
+        $query->where('category_id', $categoryId);
+    })
+    ->when($supplierId, function ($query, $supplierId) {
+        $query->where('supplier_id', $supplierId);
+    });
+
+    $products = $query->get();
+
+    $categories = Category::orderBy('name')->get();
+    $suppliers = Supplier::orderBy('name')->get();
+
+    return view('products.index', compact(
+        'products',
+        'categories',
+        'suppliers',
+        'search',
+        'categoryId',
+        'supplierId'
+    ));
+}
 
     public function create()
     {

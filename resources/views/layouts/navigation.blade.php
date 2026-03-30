@@ -118,22 +118,23 @@
 </div>
 
 
-        <!-- Fournisseur -->
-        @role('fournisseur')
-            <div class="space-y-1">
-                <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
-                    Fournisseur
-                </p>
+       <!-- Fournisseur -->
+@role('fournisseur')
+    <div class="space-y-1">
+        <p class="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
+            Fournisseur
+        </p>
 
-                <a href="{{ route('fournisseur.stock') }}"
-                   class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
-                   {{ request()->routeIs('fournisseur.stock')
-                        ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
-                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
-                    Mon Stock
-                </a>
-            </div>
-        @endrole
+        <a href="{{ route('products.index') }}"
+           class="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition
+           {{ request()->routeIs('products.*')
+                ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' }}">
+            Mes Produits
+        </a>
+    </div>
+@endrole
+
     </nav>
 
     <!-- Bottom actions -->
